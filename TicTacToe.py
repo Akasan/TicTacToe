@@ -19,6 +19,8 @@ class TicTacToe:
                                     index=self.__INDEX, 
                                     columns=self.__COLUMNS)
 
+        self.__AVAIL_ACTION = {f"{r} {c}": True for r in self.__INDEX for c in self.__COLUMNS}
+
     @property
     def table(self):
         """ get table
@@ -33,6 +35,10 @@ class TicTacToe:
         """
         return self.__table.replace(self.__CONVERT_TABLE)
     
+
+    @property
+    def avail_action(self):
+        return [k for k, v in self.__AVAIL_ACTION.items() if v]
 
     def set(self, row, col, is_X=True):
         """ set piece to table
@@ -56,6 +62,7 @@ class TicTacToe:
         assert col in self.__COLUMNS, InvalidColumnError(col)
 
         # convert text to number
+        self._update_avail_action(row, col)
         row = self.__CONVERT_ROW[row]
         col = self.__CONVERT_COL[col]
 
@@ -67,6 +74,15 @@ class TicTacToe:
         self.__table.iloc[row, col] = 1 if is_X else -1
 
         return self._is_finish() | self._is_full()   # check whether game is finished or not
+
+    def _update_avail_action(self, row, col):
+        """ update available action's list
+
+        Arguments:
+            row {str} -- row index
+            col {str} -- column index
+        """
+        self.__AVAIL_ACTION[f"{row} {col}"] = False
 
     def _is_full(self):
         """ check there're no plcae to set
