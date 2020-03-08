@@ -15,7 +15,7 @@ class TicTacToe:
     __CONVERT_COL = {k: v for k, v in zip(__COLUMNS, range(0, 3))}      # table for converting text to number of Column
 
     def __init__(self):
-        self.__table = pd.DataFrame(np.zeros((3, 3), dtype=np.uint8), 
+        self.__table = pd.DataFrame(np.zeros((3, 3), dtype=np.int8), 
                                     index=self.__INDEX, 
                                     columns=self.__COLUMNS)
 
