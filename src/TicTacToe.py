@@ -3,15 +3,12 @@ import numpy as np
 
 from error import *
 
+
 class TicTacToe:
-    __CROSS = -1                                                        # Value for describing X
-    __CIRCLE = 1                                                        # Value for describing O     
-    __ROW = 3                                                           # The number of row
-    __COL = 3                                                           # The number of column
     __INDEX = list("123")                                               # Row index list
     __COLUMNS = list("ABC")                                             # Column index list
     __CONVERT_TABLE = {0: "-", 1: "X", -1: "O"}                         # table for converting number to text for print table
-    __CONVERT_ROW = {k: v for k, v in zip(__INDEX, range(__ROW))}       # table for converting text to number of Row
+    __CONVERT_ROW = {k: v for k, v in zip(__INDEX, range(3))}           # table for converting text to number of Row
     __CONVERT_COL = {k: v for k, v in zip(__COLUMNS, range(0, 3))}      # table for converting text to number of Column
 
     def __init__(self):
@@ -36,9 +33,25 @@ class TicTacToe:
         return self.__table.replace(self.__CONVERT_TABLE)
     
 
-    @property
-    def avail_action(self):
-        return [k for k, v in self.__AVAIL_ACTION.items() if v]
+    def get_avail_action(self, is_number=False):
+        """ get action list which can be selected
+
+        Arguments:
+            is_number {bool} -- return action list as index number (default: Falser)
+        Returns:
+            {list(str)} -- action list like 'row col' (space separated)
+        """
+        val =  [k for k, v in self.__AVAIL_ACTION.items() if v]
+        if is_number:
+            num = []
+            for v in val:
+                split = v.split(" ")
+                row, col = self.__CONVERT_ROW[split[0]], self.__CONVERT_COL[split[1]]
+                num.append([row, col])
+            return num
+
+        else:
+            return val
 
     def set(self, row, col, is_X=True):
         """ set piece to table
@@ -144,11 +157,8 @@ class TicTacToe:
         win_flag["X"] |= is_X_win
         win_flag["O"] |= is_O_win
  
-        if win_flag["X"]:
-            print("X is win")
-            return True
-        elif win_flag["O"]:
-            print("O is win")
+        if True in win_flag.values():
+            print("X is win" if win_flag["X"] else "O is win")
             return True
 
         return False
@@ -178,6 +188,8 @@ class TicTacToe:
 
 if __name__ == "__main__":
     t = TicTacToe()
+    print(t.get_avail_action(True))
+    input()
     cnt = 0
     while True:
         print(t.table)

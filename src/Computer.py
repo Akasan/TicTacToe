@@ -1,9 +1,16 @@
 from TicTacToe import TicTacToe
 import numpy as np
 import argparse
+from abc import ABCMeta, abstractmethod
 
 
-class RandomComputer:
+class Computer(metaclass=ABCMeta):
+    @abstractmethod
+    def battle(self):
+        pass
+
+
+class RandomComputer(Computer):
     def __init__(self):
         self.__ttt = TicTacToe()
 
@@ -24,7 +31,7 @@ class RandomComputer:
                 is_X = True
 
             else:
-                action_list = self.__ttt.avail_action
+                action_list = self.__ttt.get_avail_action()
                 idx = np.random.randint(0, len(action_list))
                 action = action_list[idx]
                 row, col = action.split(" ")

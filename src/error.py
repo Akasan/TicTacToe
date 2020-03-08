@@ -1,6 +1,6 @@
 class InvalidRowError(Exception):
     def __init__(self, row):
-        super(InbalidRowError, self).__init__(f"Row: {row} is invalid index")
+        super(InvalidRowError, self).__init__(f"Row: {row} is invalid index")
 
 
 class InvalidColumnError(Exception):
